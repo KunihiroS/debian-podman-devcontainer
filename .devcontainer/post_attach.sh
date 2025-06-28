@@ -5,7 +5,7 @@ set -e
 
 # --- 1. .env.tmp Cleanup (Highest priority: contains secrets) ---
 FINAL_ENV_FILE="/usr/local/share/gish-tools/.env"
-TMP_ENV_FILE="/workspaces/test-golf/.devcontainer/.env.tmp"
+TMP_ENV_FILE="${PWD}/.devcontainer/.env.tmp"
 
 echo "[post-attach] Checking for temporary .env file..."
 if [ -f "$FINAL_ENV_FILE" ] && [ -f "$TMP_ENV_FILE" ]; then

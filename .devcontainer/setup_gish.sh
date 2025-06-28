@@ -39,9 +39,9 @@ uv pip install --python "${VENV_PATH}/bin/python" --no-cache-dir -r "${GISH_INST
 echo "Creating .env file for gish..."
 if [ ! -f "${GISH_INSTALL_DIR}/.env" ]; then
     echo "Final .env file not found. Proceeding with creation..."
-    if [ -f "/workspaces/test-golf/.devcontainer/.env.tmp" ]; then
+    if [ -f "${PWD}/.devcontainer/.env.tmp" ]; then
         echo "Creating .env file from .env.tmp..."
-        mv "/workspaces/test-golf/.devcontainer/.env.tmp" "${GISH_INSTALL_DIR}/.env"
+        mv "${PWD}/.devcontainer/.env.tmp" "${GISH_INSTALL_DIR}/.env"
         chmod 600 "${GISH_INSTALL_DIR}/.env"
     else
         echo "Warning: .env.tmp not found. gish may not work without an API key."
