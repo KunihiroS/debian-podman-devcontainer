@@ -56,13 +56,6 @@ Use this method to start a brand new project with this environment.
     git clone https://github.com/your-username/your-new-repo.git
     ```
 
-3.  **Open in VS Code and start the container.**
-    ```bash
-    cd your-new-repo
-    code .
-    ```
-    When VS Code opens, it will detect the `.devcontainer` configuration and prompt you to **"Reopen in Container"**. Click it to build and launch the environment.
-
 ### Option 2: For an Existing Project
 
 Add this development environment to a project you are already working on.
@@ -84,7 +77,7 @@ Add this development environment to a project you are already working on.
     # Clean up the temporary clone
     rm -rf /tmp/devcontainer-template
     ```
-    
+
 ## 🔧 Customization Guide
 
 After applying this template to your project using one of the methods above, it is highly recommended to perform the following customizations to tailor it to your needs.
