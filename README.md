@@ -35,67 +35,97 @@ Setup script that runs only once when the container is first created.
 
 ## 🚀 Getting Started
 
-There are two primary ways to use this template.
+Follow these instructions to set up the development environment.
 
-### Option 1: For a New Project (Recommended)
+### Prerequisites
 
-Use this repository as a GitHub template to start a new project with this development environment.
+- [Visual Studio Code](https://code.visualstudio.com/)
+- [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+- [Podman](https://podman.io/getting-started/installation) (as a Docker alternative)
 
-1.  Click the green **"Use this template"** button on this repository's GitHub page and select **"Create a new repository"**.
-2.  Give your new repository a name and description.
-3.  Clone your newly created repository to your local machine.
-4.  Open the cloned repository folder in Visual Studio Code.
-5.  VS Code will automatically detect the `.devcontainer` configuration and ask if you want to "Reopen in Container". Click it to build and launch your new development environment.
+### Option 1: For a New Project
+
+Use this method to start a brand new project with this environment.
+
+1.  **Create a new repository from this template.**
+    Click the **[Use this template](https://github.com/kunihiros/debian-podman-devcontainer/generate)** button on the repository's GitHub page and select **"Create a new repository"**.
+
+2.  **Clone your new repository.**
+    Replace `your-username/your-new-repo` with your actual repository details.
+    ```bash
+    git clone https://github.com/your-username/your-new-repo.git
+    ```
+
+3.  **Open in VS Code and start the container.**
+    ```bash
+    cd your-new-repo
+    code .
+    ```
+    When VS Code opens, it will detect the `.devcontainer` configuration and prompt you to **"Reopen in Container"**. Click it to build and launch the environment.
 
 ### Option 2: For an Existing Project
 
-Add this development environment to a project you're already working on.
+Add this development environment to a project you are already working on.
 
-1.  Copy the entire `.devcontainer` directory from this repository into the root of your existing project folder.
-2.  Open your project folder in Visual Studio Code.
-3.  VS Code will detect the new `.devcontainer` configuration and prompt you to "Reopen in Container". Click it to get started.
+1.  **Navigate to your project's root directory.**
+    ```bash
+    cd /path/to/your/project
+    ```
+
+2.  **Copy the `.devcontainer` directory.**
+    The easiest way is to clone this template repository temporarily and copy the directory.
+    ```bash
+    # Clone the template to a temporary location
+    git clone https://github.com/kunihiros/debian-podman-devcontainer.git /tmp/devcontainer-template
+    
+    # Copy the .devcontainer directory into your project
+    cp -r /tmp/devcontainer-template/.devcontainer .
+    
+    # Clean up the temporary clone
+    rm -rf /tmp/devcontainer-template
+    ```
+
+3.  **Open in VS Code and start the container.**
+    ```bash
+    code .
+    ```
+    VS Code will detect the `.devcontainer` configuration. Click the **"Reopen in Container"** button when prompted to get started.
+
 
 ## 🔧 Customization Guide
 
-### Basic Customization
+After applying this template to your project using one of the methods above, it is highly recommended to perform the following customizations to tailor it to your needs.
 
-- **Add more tools**: Edit the `RUN apt-get install` command in `.devcontainer/Containerfile`.
-- **Add VS Code extensions**: Add extension IDs to the `customizations.vscode.extensions` list in `.devcontainer/devcontainer.json`.
-- **Change runtime versions**: Modify the `features` section in `.devcontainer/devcontainer.json` to specify different versions for Node.js, or to add other runtimes like Go, Rust, etc.
+### Essential Customizations
 
-### Adapting to Your Project
+These changes are strongly recommended for every project to ensure clarity and avoid conflicts.
 
-When applying this template to a specific project, consider the following customizations:
+1.  **Change the Container Name**
+    This name is displayed in the VS Code UI. Change it to something that reflects your project.
+    -   **File**: `.devcontainer/devcontainer.json`
+    -   **Property**: `"name"`
+    -   **Example**: `"name": "Dev Container for My-Awesome-Project"`
 
-1. **Project-Specific Tools**
-   - Update the list of tools in `.devcontainer/Containerfile` to match your project's requirements
-   - Add any language-specific tools or runtimes needed for your project
+2.  **Update the Image Tag Owner**
+    The container image will be tagged with `kunihiros/...`. You should change `kunihiros` to your own Docker Hub username or another namespace.
+    -   **File**: `.devcontainer/devcontainer.json`
+    -   **Property**: `"build.tags"`
+    -   **Example**: `"tags": ["your-username/${localWorkspaceFolderBasename}:latest"]`
 
-2. **Environment Variables**
-   - Review and update environment variables in `.devcontainer/devcontainer.json`
-   - Add any project-specific environment variables to `containerEnv`
-   - Consider using `initializeCommand` to set up sensitive environment variables
+3.  **Review VS Code Extensions**
+    The default list of extensions is extensive. Remove any that are not relevant to your project's technology stack to keep the environment lightweight.
+    -   **File**: `.devcontainer/devcontainer.json`
+    -   **Property**: `"customizations.vscode.extensions"`
 
-3. **GitHub Integration**
-   - The template includes GitHub CLI setup. Ensure it meets your authentication needs
-   - Update the `postAttachCommand` if you have custom Git hooks or repository setup requirements
+4.  **Review `gish` Integration (Optional but Recommended)**
+    This template includes a setup for a tool called `gish`. If you do not use this tool, you should remove its integration.
+    -   **File**: `.devcontainer/devcontainer.json`
+    -   **Action**: Remove or comment out the `onCreateCommand` and `postCreateCommand` lines related to `setup_gish.sh` and `gish --help`.
+    -   **Action**: You can also delete the `.devcontainer/setup_gish.sh` file.
 
-4. **gish Integration**
-   - If you're using `gish` (GitHub Issue Shell), update the repository URL in `.devcontainer/setup_gish.sh`
-   - Modify any gish-specific configurations as needed
+### Optional Customizations
 
-5. **Post-Creation Scripts**
-   - Review and customize `.devcontainer/post_attach.sh` for any project-specific setup that should run when attaching to the container
-   - Update `.devcontainer/setup_gish.sh` if you have custom setup requirements
+-   **Add System Packages:** If your project needs other system libraries (e.g., `libpq-dev`), add them to the `apt-get install` command in the `.devcontainer/Containerfile`.
+-   **Add Project Dependencies:** Modify the `postCreateCommand` in `.devcontainer/devcontainer.json` to automatically install project dependencies (e.g., `npm install`, `uv pip install -r requirements.txt`).
 
-6. **Dev Container Features**
-   - The template includes Node.js and common utilities. Add or remove features in `devcontainer.json` as needed
-   - Consider adding database services or other required services to `docker-compose.yml` if needed
-
-7. **VS Code Settings**
-   - Customize `.vscode/settings.json` with project-specific settings
-   - Add recommended extensions for your project's technology stack
-
-8. **Documentation**
-   - Update this README with project-specific information
-   - Document any additional setup steps required for your project
+Remember to **Rebuild Container** from the Command Palette after making changes for them to take effect.
