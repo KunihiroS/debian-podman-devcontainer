@@ -38,6 +38,10 @@
   // Commands to run on the host before container creation
   "initializeCommand": "bash -ic 'echo OPENAI_API_KEY=\"$OPENAI_API_KEY\" > ./.devcontainer/.env.tmp'",
 
+  // Automatically add a timestamp tag to the image after the container starts.
+  // This command runs on the HOST machine and is idempotent.
+  "postStartCommand": "bash -c '\nLATEST_IMAGE_ID=$(podman inspect --format '{{.Id}}' kunihiros/${localWorkspaceFolderBasename}:latest)\n# Check if any tag with a timestamp format already exists for this image ID\nif ! podman images --no-trunc | grep \"$LATEST_IMAGE_ID\" | grep -qE ':[0-9]{14}' ; then\n  TIMESTAMP=$(date +%Y%m%d%H%M%S)\n  echo \"Tagging new image ${LATEST_IMAGE_ID} with timestamp ${TIMESTAMP}...\"\n  podman tag \"$LATEST_IMAGE_ID\" \"kunihiros/${localWorkspaceFolderBasename}:${TIMESTAMP}\"\nfi'",
+
   // Environment variables for the container
   "containerEnv": {
     "GISH_TOOLS_DIR": "/usr/local/share/gish-tools"

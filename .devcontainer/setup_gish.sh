@@ -49,8 +49,8 @@ if [ ! -f "${GISH_INSTALL_DIR}/.env" ]; then
 else
     echo "Final .env file already exists. Skipping creation."
     # 既存の.envがある場合は、一時ファイルは不要なので削除
-    if [ -f "/workspaces/test-golf/.devcontainer/.env.tmp" ]; then
-        rm "/workspaces/test-golf/.devcontainer/.env.tmp"
+    if [ -f "${PWD}/.devcontainer/.env.tmp" ]; then
+        rm "${PWD}/.devcontainer/.env.tmp"
     fi
 fi
 
