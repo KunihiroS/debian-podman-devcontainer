@@ -1,0 +1,101 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/universal
+{
+"name": "Podman Dev Container for test-golf",
+	// Dockerfileを使ってコンテナをビルドします。
+	"build": {
+		"dockerfile": "Containerfile"
+	},
+
+  // Dev Containerの便利な機能を追加します
+  "features": {
+    // git, zsh, sudoなど、開発でよく使うツールを自動でインストール・設定します
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "installZsh": "false",
+      "configureZshAsDefaultShell": "false",
+      "installOhMyZsh": "false",
+      "upgradePackages": "true"
+    },
+    // GitHub CLIの機能も追加します
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    // Node.js (LTS版) とパッケージマネージャー管理ツール(corepack)を導入します
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "lts"
+    }
+  },
+
+  // コンテナ初回作成時に一度だけ実行されるコマンド
+  // gishのインストールやcorepackの有効化にはroot権限が必要なため、sudoを使用します。
+  "onCreateCommand": "bash -l -c 'chmod +x ./.devcontainer/setup_gish.sh && sudo bash ./.devcontainer/setup_gish.sh && sudo env \"PATH=$PATH\" corepack enable pnpm'",
+
+  // コンテナにアタッチするたびに実行されるコマンド。GitHubの認証状態を確認し、未認証の場合は警告を表示します。
+  "postAttachCommand": "chmod +x ./.devcontainer/post_attach.sh && bash ./.devcontainer/post_attach.sh",
+
+
+  // コンテナ作成前にホストで実行するコマンド。APIキーを一時ファイルに書き出します。
+  "initializeCommand": "bash -ic 'echo OPENAI_API_KEY=\"$OPENAI_API_KEY\" > ./.devcontainer/.env.tmp'",
+
+  // コンテナ内の環境変数を設定します。
+  "containerEnv": {
+    "GISH_TOOLS_DIR": "/usr/local/share/gish-tools"
+  },
+  // コンテナ作成後に実行するコマンド。gishのインストール確認に使います。
+  "postCreateCommand": "npm install -g @google/gemini-cli && gish --help",
+
+  // VS Code固有のカスタマイズ
+  "customizations": {
+    "vscode": {
+      // ターミナルのデフォルトシェルをbashに設定
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash"
+      },
+      // コンテナ内で自動的にインストールするVS Code拡張機能
+      "extensions": [
+        "batisteo.vscode-django",
+        "bierner.markdown-mermaid",
+        "chrisdias.vscode-opennewinstance",
+        "christian-kohler.path-intellisense",
+        "dae.vscode-mac-color-picker",
+        "donjayamanne.python-environment-manager",
+        "donjayamanne.python-extension-pack",
+        "enkia.tokyo-night",
+        "gera2ld.markmap-vscode",
+        "gitguardian-secret-security.gitguardian",
+        "github.copilot",
+        "github.copilot-chat",
+        "github.remotehub",
+        "github.vscode-github-actions",
+        "google.geminicodeassist",
+        "henriquebruno.github-repository-manager",
+        "kevinrose.vsc-python-indent",
+        "kilocode.kilo-code",
+        "kunihiros.annoblue",
+        "kunihiros.mahouyo-alice-color-theme",
+        "kunihiros.tsukihime-bloodymoon-color-theme",
+        "marp-team.marp-vscode",
+        "ms-azuretools.vscode-containers",
+        "ms-azuretools.vscode-docker",
+        "ms-python.debugpy",
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-vscode-remote.remote-containers",
+        "ms-vscode-remote.remote-ssh",
+        "ms-vscode-remote.remote-ssh-edit",
+        "ms-vscode-remote.vscode-remote-extensionpack",
+        "ms-vscode.azure-repos",
+        "ms-vscode.remote-explorer",
+        "ms-vscode.remote-repositories",
+        "ms-vscode.remote-server",
+        "njpwerner.autodocstring",
+        "oderwat.indent-rainbow",
+        "ritwickdey.liveserver",
+        "saoudrizwan.claude-dev",
+        "sleistner.vscode-fileutils",
+        "streetsidesoftware.code-spell-checker",
+        "visualstudioexptteam.intellicode-api-usage-examples",
+        "visualstudioexptteam.vscodeintellicode",
+        "wholroyd.jinja"
+      ]
+    }
+  }
+}
