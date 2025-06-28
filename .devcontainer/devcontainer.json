@@ -5,7 +5,11 @@
   
   // Build the container using the specified Dockerfile
   "build": {
-    "dockerfile": "Containerfile"
+    "dockerfile": "Containerfile",
+    "context": "..",
+    "tags": [
+      "kunihiros/${localWorkspaceFolderBasename}:latest"
+    ]
   },
 
   // Add useful features to the container
