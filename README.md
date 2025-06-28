@@ -55,8 +55,47 @@ Add this development environment to a project you're already working on.
 2.  Open your project folder in Visual Studio Code.
 3.  VS Code will detect the new `.devcontainer` configuration and prompt you to "Reopen in Container". Click it to get started.
 
-## 🔧 Customization
+## 🔧 Customization Guide
+
+### Basic Customization
 
 - **Add more tools**: Edit the `RUN apt-get install` command in `.devcontainer/Containerfile`.
 - **Add VS Code extensions**: Add extension IDs to the `customizations.vscode.extensions` list in `.devcontainer/devcontainer.json`.
 - **Change runtime versions**: Modify the `features` section in `.devcontainer/devcontainer.json` to specify different versions for Node.js, or to add other runtimes like Go, Rust, etc.
+
+### Adapting to Your Project
+
+When applying this template to a specific project, consider the following customizations:
+
+1. **Project-Specific Tools**
+   - Update the list of tools in `.devcontainer/Containerfile` to match your project's requirements
+   - Add any language-specific tools or runtimes needed for your project
+
+2. **Environment Variables**
+   - Review and update environment variables in `.devcontainer/devcontainer.json`
+   - Add any project-specific environment variables to `containerEnv`
+   - Consider using `initializeCommand` to set up sensitive environment variables
+
+3. **GitHub Integration**
+   - The template includes GitHub CLI setup. Ensure it meets your authentication needs
+   - Update the `postAttachCommand` if you have custom Git hooks or repository setup requirements
+
+4. **gish Integration**
+   - If you're using `gish` (GitHub Issue Shell), update the repository URL in `.devcontainer/setup_gish.sh`
+   - Modify any gish-specific configurations as needed
+
+5. **Post-Creation Scripts**
+   - Review and customize `.devcontainer/post_attach.sh` for any project-specific setup that should run when attaching to the container
+   - Update `.devcontainer/setup_gish.sh` if you have custom setup requirements
+
+6. **Dev Container Features**
+   - The template includes Node.js and common utilities. Add or remove features in `devcontainer.json` as needed
+   - Consider adding database services or other required services to `docker-compose.yml` if needed
+
+7. **VS Code Settings**
+   - Customize `.vscode/settings.json` with project-specific settings
+   - Add recommended extensions for your project's technology stack
+
+8. **Documentation**
+   - Update this README with project-specific information
+   - Document any additional setup steps required for your project
