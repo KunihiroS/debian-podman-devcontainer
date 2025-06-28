@@ -84,14 +84,7 @@ Add this development environment to a project you are already working on.
     # Clean up the temporary clone
     rm -rf /tmp/devcontainer-template
     ```
-
-3.  **Open in VS Code and start the container.**
-    ```bash
-    code .
-    ```
-    VS Code will detect the `.devcontainer` configuration. Click the **"Reopen in Container"** button when prompted to get started.
-
-
+    
 ## 🔧 Customization Guide
 
 After applying this template to your project using one of the methods above, it is highly recommended to perform the following customizations to tailor it to your needs.
