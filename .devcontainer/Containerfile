@@ -11,7 +11,9 @@ ENV DEBIAN_FRONTEND=noninteractive
 # - ripgrep, fzf, bat: Modern replacements for standard unix tools.
 # - micro: A modern and intuitive terminal-based text editor.
 # - lazygit: A simple terminal UI for git commands.
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN apt-get update && export DEBIAN_FRONTEND=noninteractive && apt-get -y install --no-install-recommends \
+    podman \
+    uidmap \
     sudo \
     git \
     curl \
@@ -27,21 +29,24 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     fd-find \
     zoxide \
     tree \
- && rm -rf /var/lib/apt/lists/* \
- # On Debian, bat is installed as batcat, so we create a symlink for convenience
- && ln -s /usr/bin/batcat /usr/local/bin/bat || true \
- # On Debian, fd is installed as fd-find, so we create a symlink for convenience
- && ln -s /usr/bin/fdfind /usr/local/bin/fd || true \
- # Install micro editor using its official script
- && (curl https://getmic.ro | bash && mv micro /usr/local/bin) \
- # Install the latest version of lazygit
- && ( \
-    LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*') \
-    && curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz" \
-    && tar xf lazygit.tar.gz lazygit \
-    && install lazygit /usr/local/bin \
-    && rm lazygit.tar.gz \
- )
+    # Keep PODMAN_HOST environment variable when using sudo by adding a sudoers drop-in file.
+
+    # On Debian, bat is installed as batcat, so we create a symlink for convenience
+    && ln -s /usr/bin/batcat /usr/local/bin/bat || true \
+    # On Debian, fd is installed as fd-find, so we create a symlink for convenience
+    && ln -s /usr/bin/fdfind /usr/local/bin/fd || true \
+    # Install micro editor using its official script
+    && (curl https://getmic.ro | bash && mv micro /usr/local/bin) \
+    # Install the latest version of lazygit
+    && ( \
+        LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*') \
+        && curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz" \
+        && tar xf lazygit.tar.gz lazygit \
+        && install lazygit /usr/local/bin \
+        && rm lazygit.tar.gz \
+    ) \
+    # Clean up apt cache at the end
+    && apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
 # Install pipx using the system-installed pip. pipx is used to install Python applications in isolated environments.
 # Then, use pipx to install uv into a global bin directory so all users can access it.
