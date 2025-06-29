@@ -28,12 +28,12 @@ Post-attach script that runs every time the container is attached to.
 - .env setup and git fetch when the container is attached to.
 - Check the status of GitHub authentication and run `gh auth login` if not logged in.
 
-### 📦 setup_gish.sh
+### 📦 setup_gish.sh (optional)
 
 Setup script that runs only once when the container is first created.
 - Set up [gishscript](https://github.com/KunihiroS/gishscript) to make available to use `gish` command from inside the container.
 
-### 📦 post_start.sh
+### 📦 post_start.sh (optional)
 
 Script that runs every time the container starts.
 - Automatically tags the current container image with both `latest` and current date (YYYYMMDD) tags
