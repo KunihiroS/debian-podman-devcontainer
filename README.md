@@ -4,6 +4,10 @@ This repository provides a reusable, high-performance development environment te
 
 The core philosophy is to provide a clean, lightweight, and fast environment equipped with a suite of modern, productivity-enhancing CLI tools.
 
+## Limitations
+
+- Inside the container, Host GPU is not available because of podman-compose limitation. 
+
 ## ✨ Key Features
 
 - **Base OS**: Debian 12 (Bookworm) Slim - A minimal and stable foundation.
