@@ -6,7 +6,8 @@ The core philosophy is to provide a clean, lightweight, and fast environment equ
 
 ## Limitations
 
-- Inside the container, Host GPU is not available because of podman-compose limitation. 
+- Inside this container, Host GPU is not available because of podman-compose limitation.
+  GPU is available even in the container, however the combination between VSC extension and podman-compose is limited.
 
 ## ✨ Key Features
 
